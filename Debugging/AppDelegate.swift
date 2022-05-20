@@ -7,6 +7,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet var window: NSWindow!
 
+    private let session = URLSession(configuration: .default)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
@@ -20,6 +21,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
 
-
+    @IBAction func sendRequest(_ sender: Any) {
+        guard let url = URL(string: "https://www.google.com") else { return }
+        let request = URLRequest(url: url)
+        request.log()
+        let task = session.dataTask(with: request) { data, response, error in
+            response?.log(data: data, request: request)
+        }
+        task.resume()
+    }
 }
-
